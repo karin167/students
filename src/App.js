@@ -1,23 +1,66 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+
+import StudentsTable from "./StudentsTable";
+import useStudents from "./useStudents";
+import { useEffect, useState } from "react";
+import AddStudentModal from "./AddStudentModal";
+import { ColorRing } from "react-loader-spinner";
 
 function App() {
+  const {
+    students,
+    getStudentsLoading,
+    getStudentsError,
+    getStudents,
+    resetStudents,
+    deleteStudent,
+  } = useStudents();
+  //for loading initial content
+
+  const handleDeleteStudent = (studentId) => {
+    console.log({ studentId });
+
+    deleteStudent({
+      variables: { studentId: studentId },
+      onCompleted: () => {
+        getStudents();
+      },
+      onError: (error) => {},
+    });
+  };
+  useEffect(() => {
+    getStudents();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+    <div className="app-container">
+      {getStudentsLoading && (
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          <ColorRing
+            visible={true}
+            height="100"
+            width="100"
+            ariaLabel="blocks-loading"
+            wrapperStyle={{}}
+            colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
+          />
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      )}
+      {getStudentsError && <p> Error : {getStudentsError.message}</p>}
+      <StudentsTable
+        students={students}
+        onDeleteStudent={handleDeleteStudent}
+      />
+      {/* /hide the button until data loaded / */}
+      {!getStudentsLoading && (
+        <AddStudentModal
+          onAddComplete={() => {
+            //. Synchronize new updates after new student added,
+            getStudents();
+          }}
+        />
+      )}
     </div>
   );
 }
