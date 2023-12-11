@@ -4,13 +4,21 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import useStudents from "./useStudents";
-
+import Majors from "./Majors";
 function AddStudentModal({ onAddComplete }) {
   const [show, setShow] = useState(false);
 
   // Collect form values
-  const [values, setValues] = useState({ firstName: "", lastName: "" });
-  const [errors, setErrors] = useState({ firstName: "", lastName: "" });
+  const [values, setValues] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
+  const [errors, setErrors] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
 
   const { addStudent, resetStudents, insertStudentLoading } = useStudents();
   const handleClose = () => setShow(false);
@@ -19,10 +27,11 @@ function AddStudentModal({ onAddComplete }) {
   const onChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
+    const emailValue = event.target.email;
 
-    setErrors({ ...errors, [name]: "" });
+    setErrors({ ...errors, [name]: "", [emailValue]: "" });
 
-    setValues({ ...values, [name]: value });
+    setValues({ ...values, [name]: value, [emailValue]: value });
   };
 
   const handleSubmit = () => {
@@ -54,7 +63,7 @@ function AddStudentModal({ onAddComplete }) {
       <div className="pt-3 d-flex  align-items-end justify-content-end">
         <Button variant="primary" onClick={handleShow}>
           Add a new user
-        </Button>{" "}
+        </Button>
       </div>
 
       <Modal show={show} onHide={handleClose}>
@@ -85,7 +94,17 @@ function AddStudentModal({ onAddComplete }) {
                 isValid={values.lastName}
                 isInvalid={errors.lastName}
               />
+              <Form.Label>Email:</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Type your Email"
+                name="email"
+                onChange={onChange}
+                isValid={values.email}
+                isInvalid={errors.email}
+              />
             </Form.Group>
+            <Majors />
           </Form>
         </Modal.Body>
         <Modal.Footer>

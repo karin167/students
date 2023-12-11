@@ -1,6 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
-
+// import CheckIn from "./CheckIn";
 import StudentsTable from "./StudentsTable";
 import useStudents from "./useStudents";
 import { useEffect, useState } from "react";
@@ -52,6 +52,7 @@ function App() {
         students={students}
         onDeleteStudent={handleDeleteStudent}
       />
+      {/* <CheckIn /> */}
       {/* /hide the button until data loaded / */}
       {!getStudentsLoading && (
         <AddStudentModal
