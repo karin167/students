@@ -13,11 +13,13 @@ function AddStudentModal({ onAddComplete }) {
     firstName: "",
     lastName: "",
     email: "",
+    major: "",
   });
   const [errors, setErrors] = useState({
     firstName: "",
     lastName: "",
     email: "",
+    major: "",
   });
 
   const { addStudent, resetStudents, insertStudentLoading } = useStudents();
@@ -34,6 +36,9 @@ function AddStudentModal({ onAddComplete }) {
     setValues({ ...values, [name]: value, [emailValue]: value });
   };
 
+  const handleSelectMajor = (value) => {
+    setValues({ ...values, major: value });
+  };
   const handleSubmit = () => {
     console.log("Values to submit", values);
 
@@ -104,7 +109,7 @@ function AddStudentModal({ onAddComplete }) {
                 isInvalid={errors.email}
               />
             </Form.Group>
-            <Majors />
+            <Majors onSelectChange={handleSelectMajor} />
           </Form>
         </Modal.Body>
         <Modal.Footer>

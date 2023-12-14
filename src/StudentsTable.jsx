@@ -15,6 +15,7 @@ export default function StudentsTable({ students, onDeleteStudent }) {
               <th>First name</th>
               <th>Last name</th>
               <th>Email</th>
+              <th>Major</th>
               <th>Check in time</th>
             </tr>
           </thead>
@@ -24,6 +25,7 @@ export default function StudentsTable({ students, onDeleteStudent }) {
                 <td>{student.first_name}</td>
                 <td>{student.last_name}</td>
                 <td>{student.email}</td>
+                <td>{student.major}</td>
                 <td>{new Date(student.check_in_time).toLocaleString()}</td>
                 <td>
                   <img

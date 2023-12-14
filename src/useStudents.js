@@ -9,6 +9,7 @@ const GET_STUDENTS = gql`
       last_name
       email
       id
+      major
     }
   }
 `;
@@ -18,14 +19,21 @@ const ADD_STUDENT = gql`
     $firstName: String
     $lastName: String
     $email: String
+    $major: String
   ) {
     insert_students_one(
-      object: { first_name: $firstName, last_name: $lastName, email: $email }
+      object: {
+        first_name: $firstName
+        last_name: $lastName
+        email: $email
+        major: $major
+      }
     ) {
       last_name
       first_name
       email
       id
+      major
     }
   }
 `;
@@ -33,9 +41,6 @@ const ADD_STUDENT = gql`
 const DELETE_STUDENT = gql`
   mutation DeleteStudent($studentId: Int!) {
     delete_students_by_pk(id: $studentId) {
-      first_name
-      last_name
-      email
       id
     }
   }
@@ -55,10 +60,10 @@ function useStudents() {
 
   const [students, setStudents] = useState([]);
 
-  const addStudent = ({ firstName, lastName, email }) => {
-    console.log({ firstName, lastName, email });
+  const addStudent = ({ firstName, lastName, email, major }) => {
+    console.log({ firstName, lastName, email, major });
     return insertStudent({
-      variables: { firstName, lastName, email },
+      variables: { firstName, lastName, email, major },
     });
   };
 

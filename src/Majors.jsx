@@ -1,34 +1,30 @@
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
 import React, { useState, useEffect } from "react";
+import Select from "react-select";
 
-function BasicButtonExample() {
+function Majors({ onSelectChange }) {
   const [majors, setMajors] = useState([]);
   const [selectedMajor, setSelectedMajor] = useState("");
 
-  const handleSelectChange = (eventKey) => {
-    setSelectedMajor(eventKey);
-    console.log("test:", selectedMajor);
+  const handleSelectChange = (newValue, action) => {
+    onSelectChange(newValue.value);
+  };
+
+  const sanitizeMajors = (majors) => {
+    if (!Array.isArray(majors)) return [];
+
+    return majors.map((major) => ({ value: major.name, label: major.name }));
   };
 
   useEffect(() => {
     fetch("https://ios-interview.joinhandshake-internal.com/majors")
       .then((response) => response.json())
-      .then((data) => setMajors(data.majors));
+      .then((data) => setMajors(sanitizeMajors(data.majors)));
   }, []);
   console.log(majors);
 
-  return (
-    <DropdownButton
-      onSelect={handleSelectChange}
-      id="dropdown-basic-button"
-      title="Dropdown button"
-    >
-      {majors.map((major) => (
-        <Dropdown.Item eventKey={major.name}>{major.name}</Dropdown.Item>
-      ))}
-    </DropdownButton>
-  );
+  if (!majors.length) return null;
+
+  return <Select options={majors} onChange={handleSelectChange} />;
 }
 
-export default BasicButtonExample;
+export default Majors;
